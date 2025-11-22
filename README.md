@@ -11,10 +11,10 @@ $$
 
 $$
 \begin{aligned}
-\text{S}\ \rightarrow\ &\ \textsf{h q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-\mid\ &\ \textsf{x q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-\mid\ &\ \textsf{t q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-\mid\ &\ \textsf{tdg q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-\mid\ &\ \textsf{cx q[i], q[j]} \qquad 0 \leq i, j \leq n,\, i, j \in \mathcal{Z}
+\text{S}\ &\rightarrow\ \textsf{h q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
+&\mid\ \ \textsf{x q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
+&\mid\ \ \textsf{t q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
+&\mid\ \ \textsf{tdg q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
+&\mid\ \ \textsf{cx q[i], q[j]} \qquad 0 \leq i, j \leq n,\, i, j \in \mathcal{Z}
 \end{aligned}
 $$
