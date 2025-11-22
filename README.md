@@ -11,7 +11,7 @@ $$
 
 $$
 \begin{aligned}
-\text{S}\ &\rightarrow\ \textsf{h q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
+\text{S}\ \rightarrow&\ \textsf{h q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
 &\mid\ \ \textsf{x q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
 &\mid\ \ \textsf{t q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
 &\mid\ \ \textsf{tdg q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
