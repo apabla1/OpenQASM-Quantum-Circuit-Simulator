@@ -1,2 +1,2 @@
-# OpenQASM-Quantum-Circuit-Simulator
-CS 238 - Quantum Programming
+### Grammar
+$$\begin{aligned} \text{Program}\ &\rightarrow\ \texttt{OPENQASM 2.0;} \end{aligned} $$
