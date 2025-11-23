@@ -20,12 +20,12 @@ class Simulator:
         tokens = lex(qasm_str)
         parse_tree = parse(tokens)
         final_state = interp(parse_tree)
-        
+                
         ## Convert final_state (list of WeightedKet) to statevector (numpy array)
         state_vector = np.zeros(2**parse_tree["qreg_size"], dtype=complex)
         for wk in final_state:
             idx = int(wk.bitstring[::-1], 2)
-            state_vector[idx] = wk.amplitude
+            state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
 
         return state_vector
     
@@ -177,8 +177,8 @@ def parse(toks):
         else:
             raise ValueError(f"Unknown token type: {type}")
     # purge unused qubits
-    if max_qubit_used >= 0:
-        parse_tree["qreg_size"] = max_qubit_used + 1
+    # if max_qubit_used >= 0:
+    #     parse_tree["qreg_size"] = max_qubit_used + 1
 
     return parse_tree
 
@@ -196,7 +196,7 @@ class WeightedKet:
         self.amplitude = amplitude
         
     def __repr__(self):
-        return f"({self.amplitude:+.4g})|{self.bitstring}>"
+        return f"({round(self.amplitude.real,3):+g}{round(self.amplitude.imag,3):+g}j)|{self.bitstring}>"
 
 def interp(parse_tree):
     

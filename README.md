@@ -6,7 +6,7 @@ Will print out the final state in (1) state vector form, and (2) bra-ket form. A
 ### How it works
 1. The file contents will be converted to a string.
 2. The string will be passed to the lexer (`lexer.py`), which will delimit lines by semicolons and convert the string to a list of tokens using regular expressions.
-3. The token list is then passed to the parser (`parser.py`), which converts the token list to a program representation with (i) the number of qubits, (ii) the number of classical bits, and (iii) the ordered-operation list by using the following grammar:
+3. The token list is then passed to the parser (`parser.py`), which converts the token list to a program representation with (i) the number of qubits (where unused qubits are optimized), (ii) the number of classical bits, and (iii) the ordered-operation list by using the following grammar:
 
 $$
 \begin{aligned}
@@ -30,7 +30,7 @@ $$
 \end{aligned}
 $$
 
-4. This representation is then passed to the interpreter (`interp.py`). Using a weighted-ket class to represent singular kets with specific amplitudes and states as lists of weighted kets, the interpreter then starts in the all-0 state and applies gates in the operation list according to the following semantics:
+4. This representation is then passed to the interpreter (`interp.py`). Using a weighted-ket class to represent singular (little-endian) kets with specific amplitudes and states as lists of weighted kets, the interpreter then starts in the all-0 state and applies gates in the operation list according to the following semantics:
 
 $$X\ket{0} = \ket{1}, \quad X\ket{1} = \ket{0}$$
 $$H\ket{0} = \dfrac{1}{\sqrt 2}\big(\ket{0} + \ket{1}\big), \quad H\ket{1} = \dfrac{1}{\sqrt 2}\big(\ket{0} - \ket{1} \big)$$
@@ -38,7 +38,7 @@ $$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
 $$T^\dagger \ket{0} = \ket{0}, \quad T^\dagger \ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
 
-5. The final state is then reported. The simulator converts the state from a list of weighted kets in big-endian to a trimmed, little-endian matrix form, where unused qubits are not included. (Note that this is only for the purpose of having the autograder pass.)
+5. The final state is then reported. The simulator converts the state from a list of weighted to to a trimmed, vector (numpy array) form.
 
 ### Testing
 * Running `python3 compare_simulators.py ./tests` will test the simulator against [Cirq](https://quantumai.google/cirq)'s simulator on the following 14 programs in the `/tests/` directory:
