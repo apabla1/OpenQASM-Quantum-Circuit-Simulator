@@ -1,6 +1,6 @@
-# Simulator for a subset of OpenQASM
-* To run: `python3 simulator.py <filename>`
-* Will print out the final state in (1) trimmed vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation.
+# Simulator For A Subset Of OpenQASM (Open Quantum Assembly Language)
+> To run: `python3 simulator.py <filename>`
+> Will print out the final state in (1) trimmed state vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation.
 
 ### How it works
 1. The file contents will be converted to a string.
@@ -11,30 +11,30 @@ $$
 \begin{aligned}
 \text{P}\ \rightarrow &\ \textsf{OPENQASM 2.0;} \\
 &\ \textsf{include "qelib1.inc";} \\
-&\ \textsf{qreg q[n];} \qquad n \in \mathcal{Z} \\
-&\ \textsf{creg c[n];} \qquad n \in \mathcal{Z} \\
+&\ \textsf{qreg q[n];} \qquad n \in \mathbb{Z} \\
+&\ \textsf{creg c[n];} \qquad n \in \mathbb{Z} \\
 &\ \text{S*}
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-\text{S}\ &\rightarrow \textsf{h q[i];} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-&\mid\ \ \textsf{x q[i];} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-&\mid\ \ \textsf{t q[i];} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-&\mid\ \ \textsf{tdg q[i];} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
-&\mid\ \ \textsf{cx q[i], q[j];} \qquad 0 \leq i, j \leq n,\, i, j \in \mathcal{Z} \\
+\text{S}\ &\rightarrow \textsf{h q[i];} \qquad 0 \leq i \leq n,\, i \in \mathbb{Z} \\
+&\mid\ \ \textsf{x q[i];} \qquad 0 \leq i \leq n,\, i \in \mathbb{Z} \\
+&\mid\ \ \textsf{t q[i];} \qquad 0 \leq i \leq n,\, i \in \mathbb{Z} \\
+&\mid\ \ \textsf{tdg q[i];} \qquad 0 \leq i \leq n,\, i \in \mathbb{Z} \\
+&\mid\ \ \textsf{cx q[i], q[j];} \qquad 0 \leq i, j \leq n,\, i, j \in \mathbb{Z} \\
 &\mid\ \ \textsf{// }\epsilon^* \\
-&\mid\ \ \textsf{\s}
+&\mid\ \ \textsf{\s (whitespace)}
 \end{aligned}
 $$
 
-4. This representation is then passed to the interpreter (`interp.py`). Using a weighted-ket class to represent singular kets with specific amplitudes and states as lists of weighted kets, the interpreter then starts in the all-0 state and apply gates in the operation list according to the following semantics:
+4. This representation is then passed to the interpreter (`interp.py`). Using a weighted-ket class to represent singular kets with specific amplitudes and states as lists of weighted kets, the interpreter then starts in the all-0 state and applies gates in the operation list according to the following semantics:
 
 $$X\ket{0} = \ket{1}, \quad X\ket{1} = \ket{0}$$
-$$H\ket{0} = \dfrac{1}{\sqrt 2}\big(\ket{0} + \ket{1}\big), \quad H\ket{1} = \dfrac{1}{\sqrt 2}\big(\ket{0} - 1\rangle\big)$$
+$$H\ket{0} = \dfrac{1}{\sqrt 2}\big(\ket{0} + \ket{1}\big), \quad H\ket{1} = \dfrac{1}{\sqrt 2}\big(\ket{0} - \ket{1} \big)$$
 $$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
-$$T^\dag \ket{0} = \ket{0}, \quad T^\dag\ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
+$$T^\dagger \ket{0} = \ket{0}, \quad T^\dagger \ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
 
 5. The final state is then reported. The simulator converts the state from a list of weighted kets to matrix form.
