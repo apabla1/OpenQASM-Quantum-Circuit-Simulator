@@ -14,7 +14,7 @@ class WeightedKet:
         self.amplitude = amplitude
         
     def __repr__(self):
-        return f"{self.amplitude:+.4g}|{self.bitstring}>"
+        return f"({self.amplitude:+.4g})|{self.bitstring}>"
 
 def interp(parse_tree):
     
