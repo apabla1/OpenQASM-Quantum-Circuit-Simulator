@@ -20,11 +20,9 @@ import os
 def sim_time(file_path):
     with open(file_path, 'r') as f:
         qasm_string = f.read()
-    
-    sim = Simulator()
-    
+        
     start_time = time.time()
-    final_state = sim.simulate(qasm_string)
+    final_state = Simulator().simulate(qasm_string)
     end_time = time.time()
     execution_time = end_time - start_time
 

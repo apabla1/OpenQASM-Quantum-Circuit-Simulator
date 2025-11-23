@@ -176,9 +176,9 @@ def parse(toks):
                 max_qubit_used = max(c, t)
         else:
             raise ValueError(f"Unknown token type: {type}")
-    # purge unused qubits
-    # if max_qubit_used >= 0:
-    #     parse_tree["qreg_size"] = max_qubit_used + 1
+    # purge unused qubits -- optimization
+    if max_qubit_used >= 0:
+        parse_tree["qreg_size"] = max_qubit_used + 1
 
     return parse_tree
 
@@ -301,7 +301,6 @@ if __name__ == "__main__":
     tokens = lex(qasm_string)
     parse_tree = parse(tokens)
     bk_state = interp(parse_tree)
-    sim = Simulator()
-    vec_state = sim.simulate(qasm_str=qasm_string)
+    vec_state = Simulator().simulate(qasm_str=qasm_string)
     print(f"State Vector (little-endian): \n{vec_state}")
     print(f"Bra-Ket (little-endian): \n{bk_state}")
