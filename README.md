@@ -23,7 +23,7 @@ $$
 
 ### Semantic Rules
 $$X\ket{0} = \ket{1}, \quad X\ket{1} = \ket{0}$$
-$$H\ket{0} = \dfrac{1}{\sqrt 2}(\ket{0} + \ket{1}), \quad H\ket{1} = \dfrac{1}{\sqrt 2}(\ket{0} - 1\rangle)$$
+$$H\ket{0} = \dfrac{1}{\sqrt 2}\big(\ket{0} + \ket{1}\big), \quad H\ket{1} = \dfrac{1}{\sqrt 2}\big(\ket{0} - 1\rangle\big)$$
 $$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
 $$T^\dag \ket{0} = \ket{0}, \quad T^\dag\ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
