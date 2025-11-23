@@ -22,8 +22,8 @@ $$
 $$
 
 ### Semantic Rules
-$$X\ket{0} = |1\rangle, \quad X|1\rangle = |0\rangle$$
-$$H|0\rangle = \dfrac{1}{\sqrt 2}(|0\rangle + |1\rangle), \quad H|1\rangle = \dfrac{1}{\sqrt 2}(|0\rangle - 1\rangle)$$
-$$T|0\rangle = |0\rangle, \quad T|1\rangle = \dfrac{1+i}{\sqrt 2}|1\rangle$$
-$$T^\dag |0\rangle = |0\rangle, \quad T^\dag|1\rangle = \dfrac{1-i}{\sqrt 2}|1\rangle$$
+$$X\ket{0} = \ket{1}, \quad X\ket{1} = \ket{0}$$
+$$H\ket{0} = \dfrac{1}{\sqrt 2}(\ket{0} + \ket{1}), \quad H\ket{1} = \dfrac{1}{\sqrt 2}(\ket{0} - 1\rangle)$$
+$$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
+$$T^\dag \ket{0} = \ket{0}, \quad T^\dag\ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
