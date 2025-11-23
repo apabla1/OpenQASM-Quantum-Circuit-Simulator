@@ -114,9 +114,9 @@ def aggregate(state):
 if __name__ == "__main__":
     import sys
     from lexer import lex
-    from parser import parser
+    from parser import parse
     tokens = lex(sys.argv[1])
-    parse_tree = parser(tokens)
+    parse_tree = parse(tokens)
     final_state = interp(parse_tree)
     nonzero_states = [wk for wk in final_state if abs(wk.amplitude) > 1e-10]
     import pprint

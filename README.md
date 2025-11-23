@@ -1,7 +1,7 @@
 # Simulator For A Subset Of OpenQASM (Open Quantum Assembly Language)
 > **To run:** `python3 simulator.py <filename>`
 
-> Will print out the final state in (1) trimmed state vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation.
+> Will print out the final state in (1) trimmed state vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation. Also note that little-endian is used.
 
 ### How it works
 1. The file contents will be converted to a string.

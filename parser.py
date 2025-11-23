@@ -1,4 +1,4 @@
-def parser(toks):
+def parse(toks):
     parse_tree = {
         "qreg_size": None,
         "creg_size": None,
@@ -34,6 +34,6 @@ if __name__ == "__main__":
     import sys
     from lexer import lex
     tokens = lex(sys.argv[1])
-    parse_tree = parser(tokens)
+    parse_tree = parse(tokens)
     import pprint
     pprint.pprint(parse_tree)
