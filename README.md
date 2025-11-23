@@ -1,7 +1,7 @@
 # Simulator For A Subset Of OpenQASM (Open Quantum Assembly Language)
 > **To run:** `python3 simulator.py <filename>`
 
-> Will print out the final state in (1) state vector form, and (2) bra-ket form. Also note that little-endian is used.
+Will print out the final state in (1) state vector form, and (2) bra-ket form. Also note that little-endian is used.
 
 ### How it works
 1. The file contents will be converted to a string.
