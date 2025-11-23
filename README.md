@@ -20,3 +20,10 @@ $$
 &\mid\ \ \epsilon
 \end{aligned}
 $$
+
+### Semantic Rules
+$$X|0\rangle = |1\rangle, \quad X|1\rangle = |0\rangle$$
+$$H|0\rangle = \dfrac{1}{\sqrt 2}(|0\rangle + |1\rangle), \quad H|1\rangle = \dfrac{1}{\sqrt 2}(|0\rangle - \1\rangle)$$
+$$T|0\rangle = |0\rangle, \quad T|1\rangle = \dfrac{1+i}{\sqrt 2}|1\rangle$$
+$$T^\dag |0\rangle = |0\rangle, \quad T^\dag|1\rangle = \dfrac{1-i}{\sqrt 2}|1\rangle$$
+$$\text{(File headers, comments, and whitespace do nothing.)}$$
