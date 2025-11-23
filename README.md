@@ -42,7 +42,7 @@ $$\text{(File headers, comments, and whitespace do nothing.)}$$
 
 
 ### Testing
-* Running `python3 compare_simulators.py ./tests` will test the simulator against Cirq's simulator on the following 14 programs in the `/tests/` directory:
+* Running `python3 compare_simulators.py ./tests` will test the simulator against [Cirq](https://quantumai.google/cirq)'s simulator on the following 14 programs in the `/tests/` directory:
 
 | Circuit                | Qubits | Lines |
 |------------------------|-------:|------:|

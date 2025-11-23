@@ -51,7 +51,7 @@ for qasm_file in qasm_dir.glob("**/*.qasm"):
     # read the qasm file
     with open(qasm_file, "r") as f:
         qasm_string = f.read()
-    
+
     print(f"Testing YOUR simulation of {qasm_file}")
     # run your simulate function on the qasm string
     state_vector = simulate(qasm_string)
