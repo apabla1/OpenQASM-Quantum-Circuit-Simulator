@@ -1,5 +1,6 @@
 # Simulator For A Subset Of OpenQASM (Open Quantum Assembly Language)
 > To run: `python3 simulator.py <filename>`
+
 > Will print out the final state in (1) trimmed state vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation.
 
 ### How it works
@@ -25,7 +26,7 @@ $$
 &\mid\ \ \textsf{tdg q[i];} \qquad 0 \leq i \leq n,\, i \in \mathbb{Z} \\
 &\mid\ \ \textsf{cx q[i], q[j];} \qquad 0 \leq i, j \leq n,\, i, j \in \mathbb{Z} \\
 &\mid\ \ \textsf{// }\epsilon^* \\
-&\mid\ \ \textsf{\s (whitespace)}
+&\mid\ \ \textsf{\s} \quad \text{(whitespace)}
 \end{aligned}
 $$
 
