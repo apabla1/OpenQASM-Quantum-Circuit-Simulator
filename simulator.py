@@ -40,7 +40,7 @@ class Simulator:
         return state_vector
         pass
     
-### Functions pasted below for the autograder
+############################### Functions pasted below for the autograder ###############################
 
 """
 Lexer -- modified for no regex 
