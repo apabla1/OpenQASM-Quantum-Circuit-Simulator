@@ -19,26 +19,30 @@ class Simulator:
         """
         tokens = lex(qasm_str)
         parse_tree = parse(tokens)
-        
-        # trim unused qubits
-        if parse_tree["ops"]:
-            max_qubit = max(max(op["qubits"]) for op in parse_tree["ops"])
-            parse_tree["qreg_size"] = max_qubit + 1
-        
         final_state = interp(parse_tree)
-        
-        ### convert from list of WeightedKets to state vector
-        num_qubits = final_state[0].size
+
+        # purge unused qubits
+        if parse_tree["ops"]:
+            used_qubits = sorted({q for op in parse_tree["ops"] for q in op["qubits"]})
+            min_q = used_qubits[0]
+            max_q = used_qubits[-1]
+            num_qubits = max_q - min_q + 1
+            def project_bits(bitstring: str) -> str:
+                return bitstring[min_q:max_q + 1]
+        else: # no gates; keep everything
+            num_qubits = parse_tree["qreg_size"]
+            def project_bits(bitstring: str) -> str:
+                return bitstring
+
         dim = 2 ** num_qubits
         state_vector = [0j] * dim
-
         for wk in final_state:
-            idx = int(wk.bitstring[::-1], 2) # little-endian
+            trimmed_bits = project_bits(wk.bitstring)
+            idx = int(trimmed_bits[::-1], 2)  # little-endian index
             state_vector[idx] += wk.amplitude
 
-        state_vector = np.array([complex(round(a.real, 3), round(a.imag, 3)) for a in state_vector], dtype=complex)
+        state_vector = np.array([complex(round(a.real, 3), round(a.imag, 3)) for a in state_vector],dtype=complex)
         return state_vector
-        pass
     
 ############################### Functions pasted below for the autograder ###############################
 

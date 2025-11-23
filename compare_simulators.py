@@ -6,7 +6,10 @@ from pathlib import Path
 
 # Import your simulate function here.
 # cs238 can be a file, a folder with an __init__.py file,
-from simulator import simulate
+from lexer import lex
+from parser import parse
+from interp import interp
+from simulator import Simulator
 
 
 def cirq_simulate(qasm_string: str) -> list:
@@ -53,10 +56,34 @@ for qasm_file in qasm_dir.glob("**/*.qasm"):
         qasm_string = f.read()
 
     print(f"Testing YOUR simulation of {qasm_file}")
-    # run your simulate function on the qasm string
-    state_vector = simulate(qasm_string)
+    # run your simulate function on the qasm string - returns BIG-endian!
+    tokens = lex(qasm_string)
+    parse_tree = parse(tokens)
+    
+    # trim unused qubits
+    if parse_tree["ops"]:
+        max_qubit = max(max(op["qubits"]) for op in parse_tree["ops"])
+        parse_tree["qreg_size"] = max_qubit + 1
+    
+    final_state = interp(parse_tree)
+    
+    ### convert from list of WeightedKets to state vector
+    num_qubits = final_state[0].size
+    dim = 2 ** num_qubits
+    state_vector = [0j] * dim
+
+    for wk in final_state:
+        idx = int(wk.bitstring, 2) # BIG-endian
+        state_vector[idx] += wk.amplitude
+
+    state_vector = np.array([complex(round(a.real, 3), round(a.imag, 3)) for a in state_vector], dtype=complex)
     print(f"Testing CIRC simulation of {qasm_file}")
+    
+    
+    
     # run cirq's simulator on the qasm string
     cirq_state_vector = cirq_simulate(qasm_string)
+    
+    
     # compare the results!
     print(compare(state_vector, cirq_state_vector))
