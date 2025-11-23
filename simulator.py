@@ -32,5 +32,9 @@ def Simulator(str):
 if __name__ == "__main__":
     with open (sys.argv[1], 'r') as f:
         qasm_string = f.read()
-    final_state = simulate(qasm_string)
-    print(final_state)
+    tokens = lex(qasm_string)
+    parse_tree = parser(tokens)
+    bk_state = interp(parse_tree)
+    vec_state = simulate(qasm_string)
+    print(f"Trimmed Vector State: \n{vec_state}")
+    print(f"Untrimmed Bra-Ket State: \n{bk_state}")
