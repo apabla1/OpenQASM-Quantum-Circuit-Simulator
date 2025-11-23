@@ -17,6 +17,6 @@ $$
 &\mid\ \ \textsf{tdg q[i]} \qquad 0 \leq i \leq n,\, i \in \mathcal{Z} \\
 &\mid\ \ \textsf{cx q[i], q[j]} \qquad 0 \leq i, j \leq n,\, i, j \in \mathcal{Z} \\
 &\mid\ \ \textsf{// }\epsilon^* \\
-&\mid\ \ \textsf{\epsilon}
+&\mid\ \ \epsilon
 \end{aligned}
 $$
