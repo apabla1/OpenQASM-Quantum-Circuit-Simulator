@@ -13,7 +13,7 @@
 # rd84_142.qasm -- 15 qubits
 # cnt3-5_179.qasm -- 16 qubits
 
-from simulator import simulate
+from simulator import Simulator
 import time
 import os
 
@@ -21,8 +21,10 @@ def sim_time(file_path):
     with open(file_path, 'r') as f:
         qasm_string = f.read()
     
+    sim = Simulator()
+    
     start_time = time.time()
-    final_state = simulate(qasm_string)
+    final_state = sim.simulate(qasm_string)
     end_time = time.time()
     execution_time = end_time - start_time
 

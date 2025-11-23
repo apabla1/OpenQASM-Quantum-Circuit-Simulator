@@ -1,11 +1,11 @@
 """
 Note that states are represented using the state-vector model, as opposed to the matrix model. 
-We use OOP for weighted kets, and then a quantum state is simply an array of weighted kets.
+We use OOP for weighted kets, and then a quantum state is simply an array of weighted kets. Note that the kets are little-endian.
 """
 
 class WeightedKet:
     size: int    # number of qubits
-    bitstring: str      # e.g. "0101" for |0101>; big-endian
+    bitstring: str      # e.g. LITTLE-endian; bitstring[i] is qubit i 
     amplitude: complex   # amplitude 
     
     def __init__(self, size, bitstring, amplitude):
@@ -20,10 +20,11 @@ def interp(parse_tree):
     
     # init state to |00...00>
     state = []
-    for i in range(2 ** parse_tree["qreg_size"]):
-        bitstring = format(i, f'0{parse_tree["qreg_size"]}b')
-        state.append(WeightedKet(parse_tree["qreg_size"], bitstring, 0.0+0.0j)) # every amplitude is 0
-    state[0].amplitude = 1.0+0.0j # except for 00..00
+    n = parse_tree["qreg_size"]
+    for i in range(2 ** n):
+        bitstring = format(i, f'0{n}b')[::-1]
+        state.append(WeightedKet(n, bitstring, 0.0 + 0.0j)) # every ampltiude is 0
+    state[0].amplitude = 1.0 + 0.0j  # except for 00.00
     
     for op in parse_tree["ops"]:
         gate = op["gate"]

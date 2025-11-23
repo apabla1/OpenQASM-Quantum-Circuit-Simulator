@@ -1,7 +1,7 @@
 # Simulator For A Subset Of OpenQASM (Open Quantum Assembly Language)
 > **To run:** `python3 simulator.py <filename>`
 
-> Will print out the final state in (1) trimmed state vector form, and (2) un-trimmed bra-ket form. By 'trim' we mean get rid of any qubits that were not used in any computation. Also note that little-endian is used.
+> Will print out the final state in (1) state vector form, and (2) bra-ket form. Also note that little-endian is used.
 
 ### How it works
 1. The file contents will be converted to a string.
@@ -38,8 +38,7 @@ $$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
 $$T^\dagger \ket{0} = \ket{0}, \quad T^\dagger \ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
 
-5. The final state is then reported. The simulator converts the state from a list of weighted kets to matrix form.
-
+5. The final state is then reported. The simulator converts the state from a list of weighted kets in big-endian to a trimmed, little-endian matrix form, where unused qubits are not included. (Note that this is only for the purpose of having the autograder pass.)
 
 ### Testing
 * Running `python3 compare_simulators.py ./tests` will test the simulator against [Cirq](https://quantumai.google/cirq)'s simulator on the following 14 programs in the `/tests/` directory:
@@ -62,4 +61,4 @@ $$\text{(File headers, comments, and whitespace do nothing.)}$$
 | cnt3-5_179.qasm        |     16 |   179 |
 
 * Running `python3 scalability.py` will generate a graph mapping the number of qubits to the total simulator execution time for the same 14 test programs. 
-* Additionally, the `/example_files/` directory contains simple 2-qubit implementations of the Deutsch-Jozsa algorithm in both the constant and balanced function cases.
+* Additionally, the `/example_files/` directory contains simple 2-qubit implementations of the Deutsch-Jozsa algorithm in both the constant and balanced function cases. There is also a program that just  applies an $X$ gate, for simple testing.

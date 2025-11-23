@@ -20,28 +20,13 @@ class Simulator:
         tokens = lex(qasm_str)
         parse_tree = parse(tokens)
         final_state = interp(parse_tree)
-
-        # purge unused qubits
-        if parse_tree["ops"]:
-            used_qubits = sorted({q for op in parse_tree["ops"] for q in op["qubits"]})
-            min_q = used_qubits[0]
-            max_q = used_qubits[-1]
-            num_qubits = max_q - min_q + 1
-            def project_bits(bitstring: str) -> str:
-                return bitstring[min_q:max_q + 1]
-        else: # no gates; keep everything
-            num_qubits = parse_tree["qreg_size"]
-            def project_bits(bitstring: str) -> str:
-                return bitstring
-
-        dim = 2 ** num_qubits
-        state_vector = [0j] * dim
+        
+        ## Convert final_state (list of WeightedKet) to statevector (numpy array)
+        state_vector = np.zeros(2**parse_tree["qreg_size"], dtype=complex)
         for wk in final_state:
-            trimmed_bits = project_bits(wk.bitstring)
-            idx = int(trimmed_bits[::-1], 2)  # little-endian index
-            state_vector[idx] += wk.amplitude
+            idx = int(wk.bitstring[::-1], 2)
+            state_vector[idx] = wk.amplitude
 
-        state_vector = np.array([complex(round(a.real, 3), round(a.imag, 3)) for a in state_vector],dtype=complex)
         return state_vector
     
 ############################### Functions pasted below for the autograder ###############################
@@ -87,7 +72,7 @@ def lex_sq_gate(line):
         return None
     return gate, idx
 def lex_cx_gate(line):
-    parts = line.split(None, 1)
+    parts = line.split(None, 1) # "cx q[0], q[2];" -> ["cx", "q[0], q[2];"]
     if len(parts) != 2 or parts[0] != "cx":
         return None
     rest = parts[1]
@@ -160,29 +145,40 @@ def parse(toks):
         "creg_size": None,
         "ops": [],
     }
+    max_qubit_used = -1 # to purge unused qubits
     for type, value in toks:
         if type in ['COMMENT', 'NEWLINE', 'OPENQASM 2.0', 'INCLUDE_QELIB1']:
             continue
-        elif type == 'QREG':
-            reg_idx, _ = value
-            parse_tree["qreg_size"] = int(reg_idx)
         elif type == 'CREG':
             reg_idx, _ = value
             parse_tree["creg_size"] = int(reg_idx)
+        elif type == 'QREG':
+            reg_idx, _ = value
+            parse_tree["qreg_size"] = int(reg_idx)
         elif type in ['H', 'X', 'T', 'TDG']:
             qubit_idx, _ = value
+            q = int(qubit_idx)
             parse_tree["ops"].append({
                 "gate": type,          
-                "qubits": [int(qubit_idx)], 
+                "qubits": [q], 
             })
+            if q > max_qubit_used:
+                max_qubit_used = q
         elif type == 'CX':
             control_idx, target_idx = value
+            c = int(control_idx)
+            t = int(target_idx)
             parse_tree["ops"].append({
                 "gate": "CX",
-                "qubits": [int(control_idx), int(target_idx)],  # [control, target]
+                "qubits": [c, t],  # [control, target]
             })
+            if c > max_qubit_used or t > max_qubit_used:
+                max_qubit_used = max(c, t)
         else:
             raise ValueError(f"Unknown token type: {type}")
+    # purge unused qubits
+    if max_qubit_used >= 0:
+        parse_tree["qreg_size"] = max_qubit_used + 1
 
     return parse_tree
 
@@ -191,7 +187,7 @@ Interpreter
 """
 class WeightedKet:
     size: int    # number of qubits
-    bitstring: str      # e.g. "0101" for |0101>; BIG-endian
+    bitstring: str      # e.g. LITTLE-endian; bitstring[i] is qubit i 
     amplitude: complex   # amplitude 
     
     def __init__(self, size, bitstring, amplitude):
@@ -206,10 +202,11 @@ def interp(parse_tree):
     
     # init state to |00...00>
     state = []
-    for i in range(2 ** parse_tree["qreg_size"]):
-        bitstring = format(i, f'0{parse_tree["qreg_size"]}b')
-        state.append(WeightedKet(parse_tree["qreg_size"], bitstring, 0.0+0.0j)) # every amplitude is 0
-    state[0].amplitude = 1.0+0.0j # except for 00..00
+    n = parse_tree["qreg_size"]
+    for i in range(2 ** n):
+        bitstring = format(i, f'0{n}b')[::-1]
+        state.append(WeightedKet(n, bitstring, 0.0 + 0.0j)) # every ampltiude is 0
+    state[0].amplitude = 1.0 + 0.0j  # except for 00.00
     
     for op in parse_tree["ops"]:
         gate = op["gate"]
@@ -306,5 +303,5 @@ if __name__ == "__main__":
     bk_state = interp(parse_tree)
     sim = Simulator()
     vec_state = sim.simulate(qasm_str=qasm_string)
-    print(f"Trimmed Vector State (little-endian): \n{vec_state}")
-    print(f"Untrimmed Bra-Ket State (big-endian): \n{bk_state}")
+    print(f"State Vector (little-endian): \n{vec_state}")
+    print(f"Bra-Ket (little-endian): \n{bk_state}")
