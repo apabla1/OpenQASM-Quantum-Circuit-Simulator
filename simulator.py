@@ -24,7 +24,7 @@ class Simulator:
         ## Convert final_state (list of WeightedKet) to statevector (numpy array)
         state_vector = np.zeros(2**len(final_state[0].bitstring), dtype=complex)
         for wk in final_state:
-            idx = int(wk.bitstring[::-1], 2)
+            idx = int(wk.bitstring, 2)
             state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
 
         return state_vector
