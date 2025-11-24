@@ -233,7 +233,7 @@ def interp(parse_tree):
         sort(state)
         aggregate(state)
         
-    # convert back to full qreg_size by padding with zeros
+    # convert back to full qreg_size by padding with zeros and adding unused states
     full_n = parse_tree["qreg_size"]
     amp_map = {}
     for wk in state:

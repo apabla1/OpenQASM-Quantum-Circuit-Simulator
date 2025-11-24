@@ -45,12 +45,17 @@ def interp(parse_tree):
         sort(state)
         aggregate(state)
         
-    # convert back to full qreg_size by padding with zeros
-    # full_state = []
+    # convert back to full qreg_size by padding with zeros and adding unused states
     # full_n = parse_tree["qreg_size"]
+    # amp_map = {}
     # for wk in state:
     #     padded_bitstring = wk.bitstring + '0' * (full_n - n)
-    #     full_state.append(WeightedKet(full_n, padded_bitstring, wk.amplitude))
+    #     amp_map[padded_bitstring] = amp_map.get(padded_bitstring, 0.0 + 0.0j) + wk.amplitude
+    # full_state = []
+    # for i in range(2 ** full_n):
+    #     bitstring = format(i, f"0{full_n}b")[::-1] 
+    #     amp = amp_map.get(bitstring, 0.0 + 0.0j)
+    #     full_state.append(WeightedKet(full_n, bitstring, amp))
             
     return state
 
