@@ -24,7 +24,7 @@ class Simulator:
         ## Convert final_state (list of WeightedKet) to statevector (numpy array)
         state_vector = np.zeros(2**len(final_state[0].bitstring), dtype=complex)
         for wk in final_state:
-            idx = int(wk.bitstring, 2)
+            idx = int(wk.bitstring[::-1], 2)
             state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
 
         return state_vector
@@ -234,13 +234,18 @@ def interp(parse_tree):
         aggregate(state)
         
     # convert back to full qreg_size by padding with zeros
-    full_state = []
     full_n = parse_tree["qreg_size"]
+    amp_map = {}
     for wk in state:
         padded_bitstring = wk.bitstring + '0' * (full_n - n)
-        full_state.append(WeightedKet(full_n, padded_bitstring, wk.amplitude))
+        amp_map[padded_bitstring] = amp_map.get(padded_bitstring, 0.0 + 0.0j) + wk.amplitude
+    full_state = []
+    for i in range(2 ** full_n):
+        bitstring = format(i, f"0{full_n}b")[::-1] 
+        amp = amp_map.get(bitstring, 0.0 + 0.0j)
+        full_state.append(WeightedKet(full_n, bitstring, amp))
             
-    return state
+    return full_state
 
 def apply_x(state, qubit_idx):
     for wk in state:
@@ -317,6 +322,9 @@ if __name__ == "__main__":
     tokens = lex(qasm_string)
     parse_tree = parse(tokens)
     bk_state = interp(parse_tree)
-    vec_state = Simulator().simulate(qasm_str=qasm_string)
-    print(f"State Vector (little-endian): \n{vec_state}")
+    state_vector = np.zeros(2**len(bk_state[0].bitstring), dtype=complex)
+    for wk in bk_state:
+        idx = int(wk.bitstring[::-1], 2)
+        state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
     print(f"Bra-Ket (little-endian): \n{bk_state}")
+    print(f"State Vector (little-endian): \n{state_vector}")

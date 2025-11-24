@@ -61,4 +61,4 @@ $$\text{(File headers, comments, and whitespace do nothing.)}$$
 | cnt3-5_179.qasm        |     16 |   179 |
 
 * Running `python3 scalability.py` will generate a graph mapping the number of qubits to the total simulator execution time for the same 14 test programs. 
-* Additionally, the `/example_files/` directory contains simple 2-qubit implementations of the Deutsch-Jozsa algorithm in both the constant and balanced function cases. There is also a program that just  applies an $X$ gate, for simple testing. Running `python3 simulator.py ./tests/*test*` will report the little-endian state vector AND the little-endian bra-ket representation of the final state without including unused qubits.
+* Additionally, the `/example_files/` directory contains simple 2-qubit implementations of the Deutsch-Jozsa algorithm in both the constant and balanced function cases. There is also a program that just  applies an $X$ gate, for simple testing. Running `python3 simulator.py ./tests/*test*` will report the little-endian state vector AND the little-endian bra-ket representation of the final state **with** including unused qubits.
