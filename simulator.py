@@ -1,7 +1,7 @@
 import numpy as np
-from lexer import lex
-from parser import parse
-from interp import interp
+# from lexer import lex
+# from parser import parse
+# from interp import interp
 
 def fidelity(statevector1, statevector2):
     """Compute the fidelity between two statevectors."""
