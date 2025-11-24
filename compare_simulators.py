@@ -57,9 +57,15 @@ for qasm_file in qasm_dir.glob("**/*.qasm"):
 
     print(f"Testing YOUR simulation of {qasm_file}")
     # run your simulate function on the qasm string
-    state_vector = Simulator().simulate(qasm_string)
+    tokens = lex(qasm_string)
+    parse_tree = parse(tokens)
+    final_state = interp(parse_tree)
+    state_vector = np.zeros(2**len(final_state[0].bitstring), dtype=complex)
+    for wk in final_state:
+        idx = int(wk.bitstring, 2)
+        state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
     
-    print(f"Testing CIRC simulation of {qasm_file}")
+    print(f"Testing CIRQ simulation of {qasm_file}")
     # run Cirq's simulator on the qasm string
     cirq_state_vector = cirq_simulate(qasm_string)
     

@@ -1,6 +1,7 @@
 def parse(toks):
     parse_tree = {
         "qreg_size": None,
+        "num_used_qubits": None,
         "creg_size": None,
         "ops": [],
     }
@@ -11,6 +12,7 @@ def parse(toks):
         elif type == 'CREG':
             reg_idx, _ = value
             parse_tree["creg_size"] = int(reg_idx)
+            parse_tree["num_used_qubits"] = int(reg_idx)
         elif type == 'QREG':
             reg_idx, _ = value
             parse_tree["qreg_size"] = int(reg_idx)
@@ -37,7 +39,7 @@ def parse(toks):
             raise ValueError(f"Unknown token type: {type}")
     # purge unused qubits
     if max_qubit_used >= 0:
-        parse_tree["qreg_size"] = max_qubit_used + 1
+        parse_tree["num_used_qubits"] = max_qubit_used + 1
 
     return parse_tree
 

@@ -1,7 +1,7 @@
 import numpy as np
-# from lexer import lex
-# from parser import parse
-# from interp import interp
+from lexer import lex
+from parser import parse
+from interp import interp
 
 def fidelity(statevector1, statevector2):
     """Compute the fidelity between two statevectors."""
@@ -22,14 +22,14 @@ class Simulator:
         final_state = interp(parse_tree)
                 
         ## Convert final_state (list of WeightedKet) to statevector (numpy array)
-        state_vector = np.zeros(2**parse_tree["qreg_size"], dtype=complex)
+        state_vector = np.zeros(2**len(final_state[0].bitstring), dtype=complex)
         for wk in final_state:
             idx = int(wk.bitstring[::-1], 2)
             state_vector[idx] += complex(round(wk.amplitude.real, 3), round(wk.amplitude.imag, 3))
 
         return state_vector
     
-############################### Functions pasted below for the autograder ###############################
+############################### Functions pasted below (& modified) for the autograder ###############################
 
 """
 Lexer -- modified for no regex 
@@ -142,6 +142,7 @@ Parser
 def parse(toks):
     parse_tree = {
         "qreg_size": None,
+        "num_used_qubits": None,
         "creg_size": None,
         "ops": [],
     }
@@ -152,6 +153,7 @@ def parse(toks):
         elif type == 'CREG':
             reg_idx, _ = value
             parse_tree["creg_size"] = int(reg_idx)
+            parse_tree["num_used_qubits"] = int(reg_idx)
         elif type == 'QREG':
             reg_idx, _ = value
             parse_tree["qreg_size"] = int(reg_idx)
@@ -176,14 +178,21 @@ def parse(toks):
                 max_qubit_used = max(c, t)
         else:
             raise ValueError(f"Unknown token type: {type}")
-    # purge unused qubits -- optimization
+    # purge unused qubits
     if max_qubit_used >= 0:
-        parse_tree["qreg_size"] = max_qubit_used + 1
+        parse_tree["num_used_qubits"] = max_qubit_used + 1
 
     return parse_tree
 
 """
 Interpreter
+"""
+"""
+Note that states are represented using the state-vector model, as opposed to the matrix model. 
+We use OOP for weighted kets, and then a quantum state is simply an array of weighted kets. Note that the kets are little-endian.
+"""
+"""
+NOTE: This interpreter DOES convert back to full qreg_size by padding with zeros.
 """
 class WeightedKet:
     size: int    # number of qubits
@@ -202,7 +211,7 @@ def interp(parse_tree):
     
     # init state to |00...00>
     state = []
-    n = parse_tree["qreg_size"]
+    n = parse_tree["num_used_qubits"]
     for i in range(2 ** n):
         bitstring = format(i, f'0{n}b')[::-1]
         state.append(WeightedKet(n, bitstring, 0.0 + 0.0j)) # every ampltiude is 0
@@ -223,6 +232,13 @@ def interp(parse_tree):
             apply_cx(state, qs[0], qs[1])
         sort(state)
         aggregate(state)
+        
+    # convert back to full qreg_size by padding with zeros
+    full_state = []
+    full_n = parse_tree["qreg_size"]
+    for wk in state:
+        padded_bitstring = wk.bitstring + '0' * (full_n - n)
+        full_state.append(WeightedKet(full_n, padded_bitstring, wk.amplitude))
             
     return state
 

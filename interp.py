@@ -2,6 +2,9 @@
 Note that states are represented using the state-vector model, as opposed to the matrix model. 
 We use OOP for weighted kets, and then a quantum state is simply an array of weighted kets. Note that the kets are little-endian.
 """
+"""
+NOTE: This interpreter does NOT convert back to full qreg_size by padding with zeros.
+"""
 
 class WeightedKet:
     size: int    # number of qubits
@@ -20,7 +23,7 @@ def interp(parse_tree):
     
     # init state to |00...00>
     state = []
-    n = parse_tree["qreg_size"]
+    n = parse_tree["num_used_qubits"]
     for i in range(2 ** n):
         bitstring = format(i, f'0{n}b')[::-1]
         state.append(WeightedKet(n, bitstring, 0.0 + 0.0j)) # every ampltiude is 0
@@ -41,6 +44,13 @@ def interp(parse_tree):
             apply_cx(state, qs[0], qs[1])
         sort(state)
         aggregate(state)
+        
+    # convert back to full qreg_size by padding with zeros
+    # full_state = []
+    # full_n = parse_tree["qreg_size"]
+    # for wk in state:
+    #     padded_bitstring = wk.bitstring + '0' * (full_n - n)
+    #     full_state.append(WeightedKet(full_n, padded_bitstring, wk.amplitude))
             
     return state
 
