@@ -38,7 +38,7 @@ $$T\ket{0} = \ket{0}, \quad T\ket{1} = \dfrac{1+i}{\sqrt 2}\ket{1}$$
 $$T^\dagger \ket{0} = \ket{0}, \quad T^\dagger \ket{1} = \dfrac{1-i}{\sqrt 2}\ket{1}$$
 $$\text{(File headers, comments, and whitespace do nothing.)}$$
 
-5. The optimized final state is then converted to the original number of  qubits and is then reported. The simulator converts the state from a list of weighted to to a trimmed, vector (numpy array) form (again, little-endian).
+5. The optimized final state is then converted to the original number of qubits and is then reported. The simulator converts the state from a list of weighted kets to to a state vector (numpy array) form in little-endian for the purposes of autograding.
 
 ### Testing
 * Running `python3 compare_simulators.py ./tests` will test the simulator against [Cirq](https://quantumai.google/cirq)'s simulator on the following 14 programs in the `/tests/` directory:

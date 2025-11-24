@@ -235,7 +235,7 @@ def interp(parse_tree):
         
     # convert back to full qreg_size by padding with zeros and adding unused states
     full_n = parse_tree["qreg_size"]
-    amp_map = {}
+    amp_map = {} # maps bitstrings to their amplitudes!
     for wk in state:
         padded_bitstring = wk.bitstring + '0' * (full_n - n)
         amp_map[padded_bitstring] = amp_map.get(padded_bitstring, 0.0 + 0.0j) + wk.amplitude
